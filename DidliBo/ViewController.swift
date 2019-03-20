@@ -37,10 +37,10 @@ class ViewController: UIViewController {
     
     let octaveBank = AKOscillatorBank()
     let mixer = AKMixer()
-    let t = AKTuningTable().presetHighlandBagPipes()
+//    let t = AKTuningTable().presetHighlandBagPipes()
     let bank = AKOscillatorBank()
     let d = AKFlute()
-    let s = AKSampler()
+//    let s = AKSampler()
     let mandolin = AKMandolin()
     var pluckPosition = 0.2
     
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
         handlePan(pos: pos)
         
         //playmode changes
-        if (sender.state == UIGestureRecognizerState.began) {   handleModeChange(pos: pos) }
+        if (sender.state == UIGestureRecognizer.State.began) {   handleModeChange(pos: pos) }
         
         //next phrase
         if mode == "harp" { handleHarp(pos: pos) }
@@ -229,8 +229,10 @@ class ViewController: UIViewController {
         
         //loop sequence
         if sequenceIndex >= sequence.count { sequenceIndex = 0 }
-        
-        currentNote = 40 + chords.scales[self.chordVariant][self.chordIndex][sequence[sequenceIndex]] + fourFingerTranspose
+        var octav = 0
+        if octaveIndex == 0 {octav = -12}
+        if octaveIndex == 2 {octav = 12}
+        currentNote = octav + 40 + chords.scales[self.chordVariant][self.chordIndex][sequence[sequenceIndex]] + fourFingerTranspose
         //        print("\(currentNote)"
         //        envelope.start()
         noteOn(note: MIDINoteNumber(currentNote))
@@ -320,8 +322,8 @@ class ViewController: UIViewController {
         //        fireEmitter.emitterCells = [NSArray arrayWithObject:fire];
         
         emitterLayer.emitterCells = [fire]
-        emitterLayer.emitterMode = kCAEmitterLayerOutline
-        emitterLayer.emitterShape = kCAEmitterLayerCircle
+        emitterLayer.emitterMode = CAEmitterLayerEmitterMode.outline
+        emitterLayer.emitterShape = CAEmitterLayerEmitterShape.circle
         emitterLayer.emitterSize = CGSize(width: 5, height: 5)
         
         view.layer.addSublayer(emitterLayer)
